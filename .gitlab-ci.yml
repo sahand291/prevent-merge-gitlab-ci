@@ -17,7 +17,7 @@ check_branch_name:
         echo "ERROR: The branch name '$BRANCH_NAME' does not match the required pattern. Closing the MR."
         
         # Make API request to close the merge request
-        curl --request PUT --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
+        curl --request PUT --header "PRIVATE-TOKEN: MMzaysyeTETq1xSHXLpi" \
           --data "state_event=close" \
           "https://girt.ir/api/v4/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID"
         

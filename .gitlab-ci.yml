@@ -21,7 +21,7 @@ check_branch_name:
           --data "state_event=close" \
           "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID"
         
-        echo "closed merge request: '$CI_MERGE_REQUEST_IID';  token: '$CI_JOB_TOKEN'"
+        echo "closed merge request: '$CI_MERGE_REQUEST_IID';  token: '$CI_JOB_TOKEN'; project id: '$CI_PROJECT_ID'"
         exit 1
       fi
   only:

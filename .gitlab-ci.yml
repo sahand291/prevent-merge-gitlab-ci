@@ -1,20 +1,26 @@
 stages:
   - check
 
-# Job to check the branch name
+# Job to check the branch name and close MR if invalid
 check_branch_name:
   stage: check
   script:
     - |
-      # Get the branch name of the source branch (the one from the MR)
+      # Get the current branch name
       BRANCH_NAME="${CI_COMMIT_REF_NAME}"
 
-      # Define the accepted pattern (e.g., feature/* or bugfix/*)
+      # Define the required branch name pattern (e.g., feature/*, bugfix/*)
       PATTERN="^(feature|bugfix)/.*"
 
       # Check if the branch name matches the pattern
       if [[ ! "$BRANCH_NAME" =~ $PATTERN ]]; then
-        echo "ERROR: The branch name '$BRANCH_NAME' does not match the required pattern."
+        echo "ERROR: The branch name '$BRANCH_NAME' does not match the required pattern. Closing the MR."
+        
+        # Make API request to close the merge request
+        curl --request PUT --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
+          --data "state_event=close" \
+          "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID"
+        
         exit 1
       fi
   only:
